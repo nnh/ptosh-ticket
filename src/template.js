@@ -39,7 +39,7 @@ export default function createText(data) {
         <h5 class="mb-0">3.1.2. テストスクリプト</h5>
         ${data.testScript}
         <h5 class="mb-0">3.1.3. 承認者</h5>
-        ${data.approvedBy}
+        ${data.approvedBy} ${data.finalApproved}
         <h4 class="mb-0">3.2. テストコード</h4>
         ${data.testCode}
         <h3 class="mb-0">4. 最終承認</h3>

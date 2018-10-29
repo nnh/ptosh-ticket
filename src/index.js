@@ -89,12 +89,11 @@ function getDateFromActivity(activities, type) {
 function getGithubLink(activities) {
   let text = [];
 
-  const reg = new RegExp('https://github.com/');
   for (const activity of activities) {
-    if (!reg.test(activity.message)) { continue; }
+    if (!/Merge pull request/.test(activity.message)) { continue; }
 
     const lines = activity.message.split('\n');
-    const urls = lines.filter((v) => reg.test(v));
+    const urls = lines.filter((v) => /https:\/\/github.com\//.test(v));
     text.push(urls.join('<br>'));
   }
 
