@@ -58,26 +58,10 @@ async function getActivities(storyId) {
   return await doRequest(options);
 }
 
-// 指定storyIdのTask一覧を取得してdescriptionを返す。
-async function getTasksDescription(storyId) {
-  const options = {
-    url: `${baseUrl}/stories/${storyId}/tasks`,
-    headers: headers,
-    json: true
-  };
-
-  const response = await doRequest(options);
-  const tasks = [];
-  for (const task of response) {
-    tasks.push(task.description);
-  }
-  return tasks.join('<br>');
-}
-
 // descriptionを「#」で分割して、指定wordの内容を返す。
 function splitDescription(description, word) {
-  const reg = new RegExp(word);
-  const target = description.split('#').filter(v => reg.test(v));
+  const reg = new RegExp(`${word}\\s`);
+  const target = description.split(/#+\s/).filter(v => reg.test(v));
 
   if (target.length === 0) { return ''; }
   const splitedTarget = target[0].split('\n');
@@ -92,7 +76,7 @@ function getLabels(labels) {
 
 // 指定typeのdateを特定のフォーマットで返す。
 function getDateFromActivity(activities, type) {
-  const reg = new RegExp(type)
+  const reg = new RegExp(type);
   for (const activity of activities) {
     if (reg.test(activity.message)) {
       return moment(activity.occurred_at).format('LL');
@@ -122,7 +106,6 @@ async function createHtmlText(members, stories) {
   const tickets = [];
   for (const story of stories) {
     const activities = await getActivities(story.id);
-    const tasks = await getTasksDescription(story.id);
 
     const text = createText({
       id: `#${story.id}`,
@@ -137,7 +120,7 @@ async function createHtmlText(members, stories) {
       approver: 'Shuhei Kondo',
       approved: getDateFromActivity(activities, 'delivered'),
       testedBy: members[story.requested_by_id],
-      testScript: tasks,
+      testScript: splitDescription(story.description, 'テスト'),
       approvedBy: 'Toshiki Saito',
       testCode: getGithubLink(activities),
       authoriser: 'Toshiki Saito',

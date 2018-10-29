@@ -28,7 +28,7 @@ export default function createText(data) {
         ${data.createdBy} ${data.createdOn}
         <h4 class="mb-0">2.2. 仕様</h4>
         ${data.specification}
-        <h4 class="mb-0">2.3. リスクアセスメント</h4>
+        <h4 class="mb-0">2.3. リスク</h4>
         ${data.riskAssessment}
         <h4 class="mb-0">2.4. 承認者</h4>
         ${data.approver} ${data.approved}
