@@ -81,7 +81,7 @@ function splitDescription(description, word) {
 
   if (target.length === 0) { return ''; }
   const splitedTarget = target[0].split('\n');
-  return splitedTarget.slice(1, splitedTarget.length).filter(v => v);
+  return splitedTarget.slice(1, splitedTarget.length).filter(v => v).join('<br>').replace(/\\n/g, '<br>');
 }
 
 // ラベルの名前一覧を取得する。
@@ -103,7 +103,7 @@ function getDateFromActivity(activities, type) {
 
 // ActivityからGithubのリンクを取得する。
 function getGithubLink(activities) {
-  let text = '';
+  let text = [];
 
   const reg = new RegExp('https://github.com/');
   for (const activity of activities) {
@@ -111,10 +111,10 @@ function getGithubLink(activities) {
 
     const lines = activity.message.split('\n');
     const urls = lines.filter((v) => reg.test(v));
-    text += urls.join('<br>');
+    text.push(urls.join('<br>'));
   }
 
-  return text;
+  return text.join('<br>');
 }
 
 // データを元にhtmlのテキストを作成する。
